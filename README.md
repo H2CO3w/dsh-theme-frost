@@ -1,7 +1,8 @@
 # dsh-theme-frost
 
-磨砂壁纸插件:从文件夹里取一张图片,设为 DSH 网页端的全局背景。
-配色沿用官方原版(深色/浅色都支持),只改变表面 token 的不透明度。
+**一个 [DSH](https://github.com/deepseek-ai/deepseek-harness)(DeepSeek Harness)插件。**
+
+从文件夹里取一张图片,设为 DSH 网页端的全局磨砂壁纸。配色沿用官方原版(深色/浅色都支持),只改变表面 token 的不透明度。
 
 ## 这个文件夹是全自包含的
 

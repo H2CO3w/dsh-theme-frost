@@ -2,7 +2,7 @@
   "name": "dsh-theme-frost",
   "version": "0.1.0",
   "private": true,
-  "description": "磨砂壁纸：把 $DSH_HOME/theme-frost/wallpapers 里的图片设为 DSH 网页端的全局背景",
+  "description": "DSH(DeepSeek Harness)插件:把文件夹里的图片设为网页端全局磨砂壁纸,配色沿用官方原版。",
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",
@@ -39,5 +39,17 @@
   "homepage": "https://github.com/H2CO3w/dsh-theme-frost#readme",
   "bugs": {
     "url": "https://github.com/H2CO3w/dsh-theme-frost/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "theme",
+    "wallpaper",
+    "frosted-glass",
+    "web-ui"
+  ],
+  "engines": {
+    "dsh": ">=0.2.0-rc.1"
   }
 }
