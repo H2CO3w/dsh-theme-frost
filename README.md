@@ -18,14 +18,15 @@ $DSH_HOME/theme-frost/          (默认 ~/dsh/theme-frost/,取决于 $DSH_HOME)
 └── wallpapers/          数据 · ← 你放的图
 ```
 
+仓库里还带 `examples/`(演示图)、`config.example.json`(配置模板)和 `LICENSE`。
+
 ## 用法
 
 1. 把图片放进 `wallpapers/`(支持 `png` `jpg` `jpeg` `webp` `gif` `avif` `bmp` `svg`)。
 2. 想指定用哪张,改 `config.json` 的 `wallpaper`;留空则**按文件名排序取第一张**。
 3. 硬刷新浏览器(`Ctrl+Shift+R`)。
 
-**改图片和改配置都不需要重启 dsh**
-删光图片后刷新就会回落到官方原版配色。
+**改图片和改配置都不需要重启 dsh。** 删光图片后刷新就会回落到官方原版配色。
 
 ## config.json 字段
 
@@ -45,12 +46,22 @@ $DSH_HOME/theme-frost/          (默认 ~/dsh/theme-frost/,取决于 $DSH_HOME)
 
 ## 安装
 
+从 GitHub 安装:
+
+```bash
+dsh plugin --profile web add github:H2CO3w/dsh-theme-frost
+```
+
+本地开发时用 `link:` 指向源码目录:
+
 ```bash
 dsh plugin --profile web add link:/absolute/path/to/theme-frost
 ```
 
 新插件需要**重启一次** `dsh web`(客户端会缓存插件集合元数据);
 之后改 CSS 或改配置只需硬刷新。
+
+## 示例与素材
 
 `examples/` 里初始放了两张演示图:
 
