@@ -1,0 +1,14 @@
+# dsh-theme-frost bundle patch — inserts this plugin's row into the profile tree.
+#
+# `dsh plugin --profile web add` reconciles `dsh.profile.bundles` and, seeing the
+# `dsh.bundle.patch` declaration in package.json, appends `dsh-theme-frost` to the
+# bundle stack; the profile boot then merges THIS patch like any other layer.
+#
+# For a locally developed copy, declare the row manually instead: add the package
+# as a profile dependency (`pnpm add link:<abs path>`), then either append
+# `dsh-theme-frost` to `dsh.profile.bundles` in the profile's package.json or
+# keep this insert as-is. A brand-new plugin takes effect after a profile
+# restart, because client-modules caches plugin-set metadata.
+- insert:
+    - id: theme-frost
+      name: 'dsh-theme-frost'

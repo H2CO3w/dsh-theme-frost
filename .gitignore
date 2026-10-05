@@ -1,0 +1,9 @@
+# 个人数据:不进仓库
+config.json
+wallpapers/*
+!wallpapers/.gitkeep
+
+# 依赖与临时产物
+node_modules/
+*.log
+.DS_Store

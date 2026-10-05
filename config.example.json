@@ -1,0 +1,8 @@
+{
+  "blur": 28,
+  "surfaceOpacity": 0.6,
+  "panelOpacity": 0.9,
+  "wallpaper": "",
+  "dark": { "brightness": 0.52, "saturate": 1.4 },
+  "light": { "brightness": 1.06, "saturate": 1.2 }
+}
