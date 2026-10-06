@@ -1,85 +1,87 @@
 # dsh-theme-frost
 
-**一个 [DSH](https://github.com/deepseek-ai/deepseek-harness)(DeepSeek Harness)插件。**
+English | [中文](README.zh.md)
 
-从文件夹里取一张图片,设为 DSH 网页端的全局壁纸。配色沿用官方原版(深色/浅色都支持),只调整界面的透明度。
+**A [DSH](https://github.com/deepseek-ai/deepseek-harness) (DeepSeek Harness) plugin.**
 
-## 一、它有什么不一样
+Takes an image from a folder and sets it as the global wallpaper of the DSH web UI. The official palette is kept (both light and dark are supported); only the opacity of the interface changes.
 
-- **设置面板清晰。** 透明度分两档,设置面板、插件管理与其他分开
-- **兼容 DSH 0.1.7 及以上。** Node 端只导入 `node:*`,浏览器端一个模块都不导入
-- **换图和改配置不用重启。** 图片和配置都在每次刷新时重新读取,改完直接刷新页面。
-- **配置文件写错仍能运行。** 数值越界会自动收进范围,类型写错会退回默认值,并且告诉你动了哪一项;JSON 语法写错也只是回落到默认配置。
-- **代码精简。** 两个 JS 文件共 360 行(约 15 KB),没有构建步骤、没有第三方依赖。
-- **安全** 只有三个只读接口,没有任何写入功能。
+## 1. What's different
 
-## 二、用法
+- **Settings stay readable.** Opacity comes in two tiers; the settings panel and the plugin manager are separate from the rest.
+- **Compatible with DSH 0.1.7 and later.** The Node side imports only `node:*`; the browser side imports no module at all.
+- **No restart to change the image or the config.** Images and config are both re-read on every refresh; just refresh the page when done.
+- **A broken config still runs.** Out-of-range numbers are automatically clamped into range, wrong types fall back to their defaults, and it tells you which one it touched; invalid JSON likewise just falls back to the default config.
+- **Compact code.** Two JS files, 360 lines in total (about 15 KB); no build step, no third-party dependencies.
+- **Safe.** Three read-only endpoints, and no write capability at all.
 
-**安装**(二选一):
+## 2. Usage
+
+**Install** (either one):
 
 ```bash
-# 从 GitHub 装
+# from GitHub
 dsh plugin --profile web add github:H2CO3w/dsh-theme-frost
 
-# 本地开发时用 link: 指向源码目录
+# for local development, point link: at the source folder
 dsh plugin --profile web add link:/absolute/path/to/theme-frost
 ```
 
-装完需要**重启一次** `dsh web`;之后换图、改配置都不用。
+Restart `dsh web` **once** after installing; after that neither changing the image nor changing the config needs it.
 
-**换壁纸**:
+**Change the wallpaper**:
 
-1. 把图片放进 `wallpapers/`(支持 `png` `jpg` `jpeg` `webp` `gif` `avif` `bmp` `svg`)。
-2. 想指定用哪张,改 `config.json` 里的 `wallpaper`;留空则**按文件名排序取第一张**。
-3. 硬刷新浏览器(`Ctrl+Shift+R`)。
+1. Put images into `wallpapers/` (`png` `jpg` `jpeg` `webp` `gif` `avif` `bmp` `svg`).
+2. To pick one, change `wallpaper` in `config.json`; leaving it empty uses the **first file in name order**.
+3. Hard-refresh the browser (`Ctrl+Shift+R`).
 
-**换图和改配置都不需要重启。** 把图片删光再刷新,就会回到官方原版配色。
+**Neither changing images nor changing the config needs a restart.** Delete every image and refresh, and it returns to the official palette.
 
-## 三、配置项
+## 3. Configuration
 
-`config.json` 八个字段:
+The eight fields in `config.json`:
 
-| 字段 | 范围 | 默认 | 作用 |
+| Field | Range | Default | Effect |
 |---|---|---|---|
-| `blur` | 0 ~ 80 | 28 | 模糊半径(px)。`0` = 壁纸清晰锐利 |
-| `surfaceOpacity` | 0.1 ~ 1 | 0.6 | 玻璃档:主背景、侧栏、消息气泡的不透明度 |
-| `panelOpacity` | 0.1 ~ 1 | 0.9 | 高层档:设置面板、插件管理、输入框卡片、审批卡等 |
-| `wallpaper` | 文件名或 `""` | `""` | 指定用哪张图;留空 = 按文件名取第一张 |
-| `dark.brightness` | 0.2 ~ 1.5 | 0.52 | 深色模式下壁纸亮度(压暗,避免刺眼) |
-| `dark.saturate` | 0 ~ 3 | 1.4 | 深色模式饱和度 |
-| `light.brightness` | 0.5 ~ 2 | 1.06 | 浅色模式亮度(提亮,避免发灰) |
-| `light.saturate` | 0 ~ 3 | 1.2 | 浅色模式饱和度 |
+| `blur` | 0 ~ 80 | 28 | Blur radius in px. `0` = the wallpaper stays sharp |
+| `surfaceOpacity` | 0.1 ~ 1 | 0.6 | Glass tier: main background, sidebar, message bubbles |
+| `panelOpacity` | 0.1 ~ 1 | 0.9 | Upper tier: settings, plugin manager, input cards, approval cards, etc. |
+| `wallpaper` | a file name or `""` | `""` | Which image to use; empty = the first in name order |
+| `dark.brightness` | 0.2 ~ 1.5 | 0.52 | Wallpaper brightness in dark mode (dimmed, to avoid glare) |
+| `dark.saturate` | 0 ~ 3 | 1.4 | Saturation in dark mode |
+| `light.brightness` | 0.5 ~ 2 | 1.06 | Wallpaper brightness in light mode (brightened, to avoid looking muddy) |
+| `light.saturate` | 0 ~ 3 | 1.2 | Saturation in light mode |
 
-## 四、示例与素材
+## 4. Examples and assets
 
-`examples/` 里初始放了两张演示图:
+`examples/` ships two demo images to start with:
 
-| 文件 | 说明 |
+| File | Note |
 |---|---|
-| `examples/aurora.svg` | 本仓库原创,随 MIT 许可 |
-| `examples/reimu.jpg` | 东方 Project 同人素材,**版权归原作者**,不适用本仓库的 MIT 许可 |
+| `examples/aurora.svg` | Original to this repository, under the MIT license |
+| `examples/reimu.jpg` | Touhou Project fan art, **copyright its original author**, not covered by this repository's MIT license |
 
-想用它们,复制到运行时目录再刷新即可:
+To use them, copy one into the runtime folder and refresh:
 
 ```bash
 cp examples/aurora.svg "$DSH_HOME/theme-frost/wallpapers/"
 ```
 
-## 五、目录结构
+## 5. Layout
 
-代码和数据住在同一个目录里:
+Code and data live in the same folder:
 
 ```
-$DSH_HOME/theme-frost/          (默认 ~/dsh/theme-frost/,取决于 $DSH_HOME)
-├── lib/index.js         Node 端:建文件夹、读配置、提供只读接口
-├── lib/client.js        浏览器端:注入样式,把图铺成壁纸层
-├── package.json         插件声明(dsh.bundle / dsh.client)
-├── cordis.patch.yml     挂载配置
-├── README.md            本文件
-├── config.json          ← 你调的数值
-└── wallpapers/          ← 你放的图
+$DSH_HOME/theme-frost/          (defaults to ~/dsh/theme-frost/, depends on $DSH_HOME)
+├── lib/index.js         Node side: creates the folder, reads config, serves read-only endpoints
+├── lib/client.js        Browser side: injects styles, paints the image as the wallpaper layer
+├── package.json         Plugin manifest (dsh.bundle / dsh.client)
+├── cordis.patch.yml     Mount config
+├── README.md            This file
+├── config.json          ← your values
+└── wallpapers/          ← your images
 ```
 
-仓库里还带 `examples/`(演示图)、`config.example.json`(配置模板)和 `LICENSE`。
+The repository also carries `examples/` (demo images), `config.example.json` (a config template) and `LICENSE`.
 
-`wallpapers/` 与 `config.json` 是运行时数据,已在 `.gitignore` 中排除;第一次启动时插件会自动创建它们,并写出 `config.json` 模板(内容与 `config.example.json` 一致)。
+`wallpapers/` and `config.json` are runtime data, excluded through `.gitignore`; on first start the plugin creates them and writes a `config.json` template (identical in content to `config.example.json`).
