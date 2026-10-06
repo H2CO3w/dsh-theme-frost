@@ -2,34 +2,42 @@
 
 **一个 [DSH](https://github.com/deepseek-ai/deepseek-harness)(DeepSeek Harness)插件。**
 
-从文件夹里取一张图片,设为 DSH 网页端的全局磨砂壁纸。配色沿用官方原版(深色/浅色都支持),只改变表面 token 的不透明度。
+从文件夹里取一张图片,设为 DSH 网页端的全局壁纸。配色沿用官方原版(深色/浅色都支持),只调整界面的透明度。
 
-## 这个文件夹是全自包含的
+## 一、它有什么不一样
 
-代码和数据住在同一个目录里:
+- **设置面板清晰。** 透明度分两档,设置面板、插件管理与其他分开
+- **兼容 DSH 0.1.7 及以上。** Node 端只导入 `node:*`,浏览器端一个模块都不导入
+- **换图和改配置不用重启。** 图片和配置都在每次刷新时重新读取,改完直接刷新页面。
+- **配置文件写错仍能运行。** 数值越界会自动收进范围,类型写错会退回默认值,并且告诉你动了哪一项;JSON 语法写错也只是回落到默认配置。
+- **代码精简。** 两个 JS 文件共 360 行(约 15 KB),没有构建步骤、没有第三方依赖。
+- **安全** 只有三个只读接口,没有任何写入功能。
 
+## 二、用法
+
+**安装**(二选一):
+
+```bash
+# 从 GitHub 装
+dsh plugin --profile web add github:H2CO3w/dsh-theme-frost
+
+# 本地开发时用 link: 指向源码目录
+dsh plugin --profile web add link:/absolute/path/to/theme-frost
 ```
-$DSH_HOME/theme-frost/          (默认 ~/dsh/theme-frost/,取决于 $DSH_HOME)
-├── lib/index.js         代码 · 宿主半:建文件夹、读配置、提供只读 HTTP 路由
-├── lib/client.js        代码 · 客户端半:注入 CSS,把图铺成壁纸层
-├── package.json         代码 · 插件声明(dsh.bundle / dsh.client)
-├── cordis.patch.yml     代码 · 挂载行
-├── README.md            代码 · 本文件
-├── config.json          数据 · ← 你调的数值
-└── wallpapers/          数据 · ← 你放的图
-```
 
-仓库里还带 `examples/`(演示图)、`config.example.json`(配置模板)和 `LICENSE`。
+装完需要**重启一次** `dsh web`;之后换图、改配置都不用。
 
-## 用法
+**换壁纸**:
 
 1. 把图片放进 `wallpapers/`(支持 `png` `jpg` `jpeg` `webp` `gif` `avif` `bmp` `svg`)。
-2. 想指定用哪张,改 `config.json` 的 `wallpaper`;留空则**按文件名排序取第一张**。
+2. 想指定用哪张,改 `config.json` 里的 `wallpaper`;留空则**按文件名排序取第一张**。
 3. 硬刷新浏览器(`Ctrl+Shift+R`)。
 
-**改图片和改配置都不需要重启 dsh。** 删光图片后刷新就会回落到官方原版配色。
+**换图和改配置都不需要重启。** 把图片删光再刷新,就会回到官方原版配色。
 
-## config.json 字段
+## 三、配置项
+
+`config.json` 八个字段:
 
 | 字段 | 范围 | 默认 | 作用 |
 |---|---|---|---|
@@ -42,27 +50,7 @@ $DSH_HOME/theme-frost/          (默认 ~/dsh/theme-frost/,取决于 $DSH_HOME)
 | `light.brightness` | 0.5 ~ 2 | 1.06 | 浅色模式亮度(提亮,避免发灰) |
 | `light.saturate` | 0 ~ 3 | 1.2 | 浅色模式饱和度 |
 
-数值超范围会被自动收进范围,类型写错的字段退回默认值,两者都会在
-`/theme-frost/config` 响应的 `notes` 里说明 —— 不会静默失效。
-
-## 安装
-
-从 GitHub 安装:
-
-```bash
-dsh plugin --profile web add github:H2CO3w/dsh-theme-frost
-```
-
-本地开发时用 `link:` 指向源码目录:
-
-```bash
-dsh plugin --profile web add link:/absolute/path/to/theme-frost
-```
-
-新插件需要**重启一次** `dsh web`(客户端会缓存插件集合元数据);
-之后改 CSS 或改配置只需硬刷新。
-
-## 示例与素材
+## 四、示例与素材
 
 `examples/` 里初始放了两张演示图:
 
@@ -77,6 +65,21 @@ dsh plugin --profile web add link:/absolute/path/to/theme-frost
 cp examples/aurora.svg "$DSH_HOME/theme-frost/wallpapers/"
 ```
 
-`wallpapers/` 与 `config.json` 是你的运行时数据,已在 `.gitignore` 中排除;
-第一次启动时插件会自动创建它们,并写出 `config.json` 模板
-(内容与 `config.example.json` 一致)。
+## 五、目录结构
+
+代码和数据住在同一个目录里:
+
+```
+$DSH_HOME/theme-frost/          (默认 ~/dsh/theme-frost/,取决于 $DSH_HOME)
+├── lib/index.js         Node 端:建文件夹、读配置、提供只读接口
+├── lib/client.js        浏览器端:注入样式,把图铺成壁纸层
+├── package.json         插件声明(dsh.bundle / dsh.client)
+├── cordis.patch.yml     挂载配置
+├── README.md            本文件
+├── config.json          ← 你调的数值
+└── wallpapers/          ← 你放的图
+```
+
+仓库里还带 `examples/`(演示图)、`config.example.json`(配置模板)和 `LICENSE`。
+
+`wallpapers/` 与 `config.json` 是运行时数据,已在 `.gitignore` 中排除;第一次启动时插件会自动创建它们,并写出 `config.json` 模板(内容与 `config.example.json` 一致)。
