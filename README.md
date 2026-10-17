@@ -1,87 +1,81 @@
 # dsh-theme-frost
 
-English | [中文](README.zh.md)
+A wallpaper plugin for the DSH (DeepSeek Harness) web UI.
 
-**A [DSH](https://github.com/deepseek-ai/deepseek-harness) (DeepSeek Harness) plugin.**
+It does two things:
 
-Takes an image from a folder and sets it as the global wallpaper of the DSH web UI. The official palette is kept (both light and dark are supported); only the opacity of the interface changes.
+- Shows your image as the page background.
+- Turns the interface into frosted glass, keeping the official palette.
+Light and dark themes are supported.
+Code, settings, and images all live in one folder.
 
-## 1. What's different
+## Install
 
-- **Settings stay readable.** Opacity comes in two tiers; the settings panel and the plugin manager are separate from the rest.
-- **Compatible with DSH 0.1.7 and later.** The Node side imports only `node:*`; the browser side imports no module at all.
-- **No restart to change the image or the config.** Images and config are both re-read on every refresh; just refresh the page when done.
-- **A broken config still runs.** Out-of-range numbers are automatically clamped into range, wrong types fall back to their defaults, and it tells you which one it touched; invalid JSON likewise just falls back to the default config.
-- **Compact code.** Two JS files, 360 lines in total (about 15 KB); no build step, no third-party dependencies.
-- **Safe.** Three read-only endpoints, and no write capability at all.
-
-## 2. Usage
-
-**Install** (either one):
+Clone the repository where you want it, then link it into DSH:
 
 ```bash
-# from GitHub
-dsh plugin --profile web add github:H2CO3w/dsh-theme-frost
-
-# for local development, point link: at the source folder
-dsh plugin --profile web add link:/absolute/path/to/theme-frost
+git clone https://github.com/H2CO3w/dsh-theme-frost.git ~/dsh-theme-frost
+dsh plugin --profile web add link:$HOME/dsh-theme-frost
 ```
 
-Restart `dsh web` **once** after installing; after that neither changing the image nor changing the config needs it.
+Restart `dsh web` once.
 
-**Change the wallpaper**:
-
-1. Put images into `wallpapers/` (`png` `jpg` `jpeg` `webp` `gif` `avif` `bmp` `svg`).
-2. To pick one, change `wallpaper` in `config.json`; leaving it empty uses the **first file in name order**.
-3. Hard-refresh the browser (`Ctrl+Shift+R`).
-
-**Neither changing images nor changing the config needs a restart.** Delete every image and refresh, and it returns to the official palette.
-
-## 3. Configuration
-
-The eight fields in `config.json`:
-
-| Field | Range | Default | Effect |
-|---|---|---|---|
-| `blur` | 0 ~ 80 | 28 | Blur radius in px. `0` = the wallpaper stays sharp |
-| `surfaceOpacity` | 0.1 ~ 1 | 0.6 | Glass tier: main background, sidebar, message bubbles |
-| `panelOpacity` | 0.1 ~ 1 | 0.9 | Upper tier: settings, plugin manager, input cards, approval cards, etc. |
-| `wallpaper` | a file name or `""` | `""` | Which image to use; empty = the first in name order |
-| `dark.brightness` | 0.2 ~ 1.5 | 0.52 | Wallpaper brightness in dark mode (dimmed, to avoid glare) |
-| `dark.saturate` | 0 ~ 3 | 1.4 | Saturation in dark mode |
-| `light.brightness` | 0.5 ~ 2 | 1.06 | Wallpaper brightness in light mode (brightened, to avoid looking muddy) |
-| `light.saturate` | 0 ~ 3 | 1.2 | Saturation in light mode |
-
-## 4. Examples and assets
-
-`examples/` ships two demo images to start with:
-
-| File | Note |
-|---|---|
-| `examples/aurora.svg` | Original to this repository, under the MIT license |
-| `examples/reimu.jpg` | Touhou Project fan art, **copyright its original author**, not covered by this repository's MIT license |
-
-To use them, copy one into the runtime folder and refresh:
-
-```bash
-cp examples/aurora.svg "$DSH_HOME/theme-frost/wallpapers/"
-```
-
-## 5. Layout
-
-Code and data live in the same folder:
+You can also hand this to DeepSeek:
 
 ```
-$DSH_HOME/theme-frost/          (defaults to ~/dsh/theme-frost/, depends on $DSH_HOME)
-├── lib/index.js         Node side: creates the folder, reads config, serves read-only endpoints
-├── lib/client.js        Browser side: injects styles, paints the image as the wallpaper layer
-├── package.json         Plugin manifest (dsh.bundle / dsh.client)
-├── cordis.patch.yml     Mount config
-├── README.md            This file
-├── config.json          ← your values
-└── wallpapers/          ← your images
+dsh 请帮我安装插件 https://github.com/H2CO3w/dsh-theme-frost
 ```
 
-The repository also carries `examples/` (demo images), `config.example.json` (a config template) and `LICENSE`.
+## Use
 
-`wallpapers/` and `config.json` are runtime data, excluded through `.gitignore`; on first start the plugin creates them and writes a `config.json` template (identical in content to `config.example.json`).
+Only two things to remember:
+
+1. Change the wallpaper: put images into `wallpapers/`
+2. Tune the effect: edit `config.json`
+
+Refresh the page after either change. No restart needed.
+Supported images: `png` `jpg` `jpeg` `webp` `gif` `avif` `bmp` `svg`
+
+Dark and light themes can use different images.
+
+## Settings
+
+`config.json` is created on first start.
+
+- `blur`: blur amount.
+- `surfaceOpacity`: main surface opacity.
+- `panelOpacity`: settings panel opacity.
+- `wallpaper`: which image to use when no scheme has its own. Empty means the first file in name order.
+- `dark.wallpaper`: image for dark mode. Default reimu.jpg.
+- `light.wallpaper`: image for light mode. Default marisa.jpg.
+- `dark.brightness`: image brightness in dark mode.
+- `dark.saturate`: image saturation in dark mode.
+- `light.brightness`: image brightness in light mode.
+- `light.saturate`: image saturation in light mode.
+
+A value of the wrong type is ignored.
+Broken JSON falls back to the defaults.
+
+## Folder
+
+```
+dsh-theme-frost/
+├── lib/              plugin code
+├── wallpapers/       your images (ships reimu.jpg and marisa.jpg as demos)
+├── config.json       your settings (auto-generated)
+├── package.json      plugin manifest
+├── cordis.patch.yml  mount configuration
+├── test/             tests
+└── README.md, README.zh.md
+```
+
+## Compatibility
+
+- DSH 0.2.0-rc.1 or newer
+- A browser with CSS color-mix
+  (Chromium 111+, Firefox 113+, Safari 16.2+)
+
+## License
+
+MIT.
+Note: the bundled `wallpapers/reimu.jpg` and `wallpapers/marisa.jpg` are not covered by the MIT license.
